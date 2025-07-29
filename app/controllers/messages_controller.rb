@@ -1,24 +1,21 @@
 class MessagesController < ApplicationController
     skip_before_action :verify_authenticity_token
-    
+    before_action :authenticate_user!
+
     # GET /messages
     def index
-        # Temporarily show all messages for debugging
-        @messages = Message.all.order(created_at: :desc)
+        @messages = current_user.messages.order(created_at: :desc)
         render json: @messages
     end
 
     # POST /messages
     def create
-        session_id = session.id.to_s
-        
         # Create message record
-        @message = Message.new(message_params.merge(
-            session_id: session_id,
+        @message = current_user.messages.new(message_params.merge(
             from: ENV['TWILIO_PHONE_NUMBER'],
             status: 'pending'
         ))
-        
+
         if @message.save
             # Send SMS via Twilio
             twilio_service = TwilioService.new
@@ -27,7 +24,7 @@ class MessagesController < ApplicationController
                 from: @message.from,
                 body: @message.content
             )
-            
+
             # Update message with Twilio response
             if result[:success]
                 @message.update(
@@ -52,5 +49,19 @@ class MessagesController < ApplicationController
 
     def message_params
         params.require(:message).permit(:content, :to)
+    end
+
+    # Simple authentication method (temporary replacement for Devise)
+    def authenticate_user!
+        # For now, we'll use a simple session-based approach
+        # In a real app, you'd use proper token authentication
+        unless session[:user_id]
+            render json: { error: 'Authentication required' }, status: :unauthorized
+            return
+        end
+    end
+
+    def current_user
+        @current_user ||= User.find(session[:user_id]) if session[:user_id]
     end
 end

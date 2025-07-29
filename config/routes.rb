@@ -5,6 +5,10 @@ Rails.application.routes.draw do
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
 
-  # API routes for messages
+  # Authentication routes
+  post '/auth/register', to: 'auth#register'
+  post '/auth/login', to: 'auth#login'
+
+  # API routes for messages (requires authentication)
   resources :messages, only: [:index, :create]
 end

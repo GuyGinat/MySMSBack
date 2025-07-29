@@ -52,3 +52,5 @@ gem "mongoid"
 gem "twilio-ruby"
 gem "dotenv-rails", groups: [:development, :test]
 gem "rack-cors"
+gem "devise"
+gem "devise_token_auth"

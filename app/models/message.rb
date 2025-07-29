@@ -7,7 +7,7 @@ class Message
   field :status, type: String
   field :sent_at, type: Time
   field :twilio_sid, type: String
-  field :session_id, type: String
   field :error_message, type: String
-  # belongs_to :user  # Temporarily commented out for Twilio testing
+  
+  belongs_to :user
 end
