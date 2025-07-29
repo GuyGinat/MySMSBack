@@ -49,3 +49,6 @@ group :development do
 end
 
 gem "mongoid"
+gem "twilio-ruby"
+gem "dotenv-rails", groups: [:development, :test]
+gem "rack-cors"
