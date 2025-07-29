@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   post '/auth/register', to: 'auth#register'
   post '/auth/login', to: 'auth#login'
 
+  # Webhook routes
+  post '/webhooks/sms_status', to: 'webhooks#sms_status'
+
   # API routes for messages (requires authentication)
   resources :messages, only: [:index, :create]
 end

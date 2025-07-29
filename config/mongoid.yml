@@ -146,3 +146,10 @@ test:
         read:
           mode: :primary
         max_pool_size: 1
+
+production:
+  clients:
+    default:
+      uri: <%= ENV['MONGODB_URI'] || 'mongodb+srv://guy:GuyGi@messages.tfkd1xe.mongodb.net/my_sms_back_production?retryWrites=true&w=majority&appName=Messages' %>
+      options:
+        log_level: :warn
