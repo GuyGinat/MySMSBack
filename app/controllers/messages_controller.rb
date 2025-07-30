@@ -55,6 +55,9 @@ class MessagesController < ApplicationController
     def authenticate_user!
         # For now, we'll use a simple session-based approach
         # In a real app, you'd use proper token authentication
+        Rails.logger.info "Authentication check - Session: #{session.inspect}"
+        Rails.logger.info "Authentication check - User ID: #{session[:user_id]}"
+        
         unless session[:user_id]
             render json: { error: 'Authentication required' }, status: :unauthorized
             return

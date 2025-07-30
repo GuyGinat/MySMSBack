@@ -36,8 +36,15 @@ Rails.application.configure do
   # Enable locale fallbacks for I18n.
   config.i18n.fallbacks = true
 
+  # Session configuration for cross-origin requests
+  config.session_store :cookie_store, 
+    key: '_mysmsback_session',
+    domain: :all,
+    same_site: :none,
+    secure: true
+
   # CORS configuration for production
-  frontend_url = 'https://my-sms-front.vercel.app/'
+  frontend_url = 'https://my-sms-front.vercel.app'
   
   config.after_initialize do
     Rails.logger.info "CORS Configuration - FRONTEND_URL: #{ENV['FRONTEND_URL']}"
