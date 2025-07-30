@@ -43,22 +43,21 @@ Rails.application.configure do
     same_site: :none,
     secure: true
 
-  # CORS configuration for production - TEMPORARILY ALLOW ALL ORIGINS FOR DEBUGGING
+  # CORS configuration for production
   frontend_url = 'https://my-sms-front.vercel.app'
   
   config.after_initialize do
     Rails.logger.info "CORS Configuration - FRONTEND_URL: #{ENV['FRONTEND_URL']}"
     Rails.logger.info "CORS Configuration - Using origins: #{frontend_url}"
-    Rails.logger.info "CORS Configuration - TEMPORARILY ALLOWING ALL ORIGINS"
   end
   
   config.middleware.insert_before 0, Rack::Cors do
     allow do
-      origins '*'  # Temporarily allow all origins for debugging
+      origins frontend_url
       resource '*',
         headers: :any,
         methods: [:get, :post, :put, :patch, :delete, :options, :head],
-        credentials: false  # Temporarily disable credentials for debugging
+        credentials: true
     end
   end
 end
