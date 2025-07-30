@@ -38,8 +38,12 @@ Rails.application.configure do
 
   # CORS configuration for production.
   frontend_url = ENV['FRONTEND_URL'] || 'https://your-frontend-domain.com'
-  Rails.logger.info "CORS Configuration - FRONTEND_URL: #{ENV['FRONTEND_URL']}"
-  Rails.logger.info "CORS Configuration - Using origins: #{frontend_url}"
+  
+  # Log CORS configuration after logger is initialized
+  config.after_initialize do
+    Rails.logger.info "CORS Configuration - FRONTEND_URL: #{ENV['FRONTEND_URL']}"
+    Rails.logger.info "CORS Configuration - Using origins: #{frontend_url}"
+  end
   
   config.middleware.insert_before 0, Rack::Cors do
     allow do
