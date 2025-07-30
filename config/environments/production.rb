@@ -36,22 +36,18 @@ Rails.application.configure do
   # Enable locale fallbacks for I18n.
   config.i18n.fallbacks = true
 
-  # CORS configuration for production.
-  frontend_url = ENV['FRONTEND_URL'] || 'https://your-frontend-domain.com'
-  
-  # Log CORS configuration after logger is initialized
+  # CORS configuration for production - TEMPORARILY ALLOW ALL ORIGINS
   config.after_initialize do
-    Rails.logger.info "CORS Configuration - FRONTEND_URL: #{ENV['FRONTEND_URL']}"
-    Rails.logger.info "CORS Configuration - Using origins: #{frontend_url}"
+    Rails.logger.info "CORS Configuration - ALLOWING ALL ORIGINS (TEMP)"
   end
   
   config.middleware.insert_before 0, Rack::Cors do
     allow do
-      origins frontend_url
+      origins '*'  # Allow all origins temporarily
       resource '*',
         headers: :any,
         methods: [:get, :post, :put, :patch, :delete, :options, :head],
-        credentials: true
+        credentials: false  # Must be false when using origins '*'
     end
   end
 end
