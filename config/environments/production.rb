@@ -37,9 +37,13 @@ Rails.application.configure do
   config.i18n.fallbacks = true
 
   # CORS configuration for production.
+  frontend_url = ENV['FRONTEND_URL'] || 'https://your-frontend-domain.com'
+  Rails.logger.info "CORS Configuration - FRONTEND_URL: #{ENV['FRONTEND_URL']}"
+  Rails.logger.info "CORS Configuration - Using origins: #{frontend_url}"
+  
   config.middleware.insert_before 0, Rack::Cors do
     allow do
-      origins ENV['FRONTEND_URL'] || 'https://your-frontend-domain.com'
+      origins frontend_url
       resource '*',
         headers: :any,
         methods: [:get, :post, :put, :patch, :delete, :options, :head],
