@@ -36,18 +36,21 @@ Rails.application.configure do
   # Enable locale fallbacks for I18n.
   config.i18n.fallbacks = true
 
-  # CORS configuration for production - TEMPORARILY ALLOW ALL ORIGINS
+  # CORS configuration for production
+  frontend_url = 'https://my-sms-front.vercel.app/'
+  
   config.after_initialize do
-    Rails.logger.info "CORS Configuration - ALLOWING ALL ORIGINS (TEMP)"
+    Rails.logger.info "CORS Configuration - FRONTEND_URL: #{ENV['FRONTEND_URL']}"
+    Rails.logger.info "CORS Configuration - Using origins: #{frontend_url}"
   end
   
   config.middleware.insert_before 0, Rack::Cors do
     allow do
-      origins '*'  # Allow all origins temporarily
+      origins frontend_url
       resource '*',
         headers: :any,
         methods: [:get, :post, :put, :patch, :delete, :options, :head],
-        credentials: false  # Must be false when using origins '*'
+        credentials: true
     end
   end
 end
